@@ -39,7 +39,7 @@ async def predict_image(file: UploadFile = File(...)):
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
         # 2. สั่งให้ YOLO ส่องหาปลาในรูป (ปรับ conf=0.25 คือความมั่นใจ 25% ขึ้นไปถึงจะนับ)
-        results = model.predict(source=img, conf=0.25)
+        results = model.predict(source=img, conf=0.1, iou=0.3, imgsz=320, half=True)
 
         # 3. นับจำนวนว่าเจอปลาทั้งหมดกี่ตัว
         count = len(results[0].boxes)
@@ -63,3 +63,4 @@ async def predict_image(file: UploadFile = File(...)):
             "status": "error",
             "message": f"เกิดข้อผิดพลาดตอนคำนวณ: {str(e)}"
         }
+
